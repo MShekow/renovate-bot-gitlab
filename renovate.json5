@@ -1,0 +1,28 @@
+// Note: we use JSON5 to be able to use comments
+// This file contains the specific configuration for THIS repository, that is, how Renovate bot should update
+// its own repo
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    "config:base"
+  ],
+  "gitLabAutomerge": true, // enables GitLab's "merge when pipeline succeeds" feature
+  "packageRules": [
+    {
+      "description": "Trigger breaking release for major updates",
+      "matchPackageNames": ["renovate/renovate"],
+      "matchUpdateTypes": ["major"],
+      "semanticCommitType": "feat",
+      "commitMessageSuffix": "BREAKING CHANGE: Major update"
+    },
+    {
+      "description": "Automatically merge minor updates",
+      "matchPackageNames": ["renovate/renovate"],
+      "matchUpdateTypes": ["minor", "patch", "digest"],
+      "automerge": true,
+      // Force Renovate to not create a MR (but merge its branches directly), to avoid MR-related email spam
+      "automergeType": "branch",
+      "requiredStatusChecks": null
+    }
+  ]
+}

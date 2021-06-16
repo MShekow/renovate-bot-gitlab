@@ -1,0 +1,14 @@
+include: '/templates/renovate.gitlab-ci.yml'
+
+# Tweak the already-defined "renovate" job (see _common.gitlab-ci.yml) to run for any reason (such as code pushes or
+# being on a schedule), but NOT for branches created by Renovate bot (which are different from 'main'). We assume that
+# the new bot's version will work. In fact, created branches are configured to be fully automatically merged
+# (see renovate.json5), and no pipeline run is necessary.
+renovate:
+  rules:
+    - if: '$CI_COMMIT_BRANCH != "main"'
+      when: never
+    - when: on_success
+  # Optional: assign tags so that the pipeline is only execute by specific runners (having this tag)
+  # tags:
+  #   - sometag
